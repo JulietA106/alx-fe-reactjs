@@ -1,3 +1,5 @@
+import UserProfile from './components/UserProfile';
+
 import Header from './components/Header';
 import MainContent from './components/MainContent';
 import Footer from './components/Footer';
@@ -22,11 +24,16 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
+      <WelcomeMessage />
+      <UserProfile 
+  name="Juliet Angaandi" 
+  age="22" 
+  bio="A passionate front-end developer who loves clean code, design, and exploring nature."
+/>
       <Header />
       <MainContent />
-      <Footer />
       {/* 👇 Add your custom component here */}
-    <WelcomeMessage />
+      <Footer />
 
       <h1>Vite + React</h1>
       <div className="card">
