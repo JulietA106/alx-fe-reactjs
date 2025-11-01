@@ -26,9 +26,9 @@ function App() {
       </div>
       <WelcomeMessage />
       <UserProfile 
-  name="Juliet Angaandi" 
-  age="22" 
-  bio="A passionate front-end developer who loves clean code, design, and exploring nature."
+  name="Alice" 
+  age="25" 
+  bio="Loves hiking and photography"
 />
       <Header />
       <MainContent />
