@@ -1,18 +1,17 @@
-import UserProfile from './components/UserProfile';
+import { useState } from 'react';
+import reactLogo from './assets/react.svg';
+import viteLogo from '/vite.svg';
+import './App.css';
 
+import Counter from './components/counter';
+import UserProfile from './components/UserProfile';
 import Header from './components/Header';
 import MainContent from './components/MainContent';
 import Footer from './components/Footer';
-
 import WelcomeMessage from './components/WelcomeMessage';
 
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-
 function App() {
-  const [count, setCount] = useState(0)
+  const [count, setCount] = useState(0);
 
   return (
     <>
@@ -24,20 +23,25 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
+
       <WelcomeMessage />
       <UserProfile 
-  name="Alice" 
-  age="25" 
-  bio="Loves hiking and photography"
-/>
+        name="Alice" 
+        age="25" 
+        bio="Loves hiking and photography"
+      />
+
       <Header />
       <MainContent />
-      {/* 👇 Add your custom component here */}
+
+      <h1 style={{ textAlign: 'center' }}>Welcome to My React App</h1>
+      <Counter />   {/* Counter component placed here */}
+
       <Footer />
 
       <h1>Vite + React</h1>
       <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
+        <button onClick={() => setCount(count + 1)}>
           count is {count}
         </button>
         <p>
@@ -48,7 +52,9 @@ function App() {
         Click on the Vite and React logos to learn more
       </p>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
+
+
