@@ -6,7 +6,6 @@ function UserProfile() {
 
   return (
     <div>
-      <h2>User Profile</h2>
       <p>Name: {userData.name}</p>
       <p>Email: {userData.email}</p>
     </div>
@@ -14,5 +13,6 @@ function UserProfile() {
 }
 
 export default UserProfile;
+
 
 
