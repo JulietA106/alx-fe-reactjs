@@ -1,7 +1,8 @@
-import UserDetails from './UserDetails';
+// UserInfo.jsx
+import UserProfile from './UserProfile';
 
-function UserInfo({ userData }) {  // receiving props
-  return <UserDetails userData={userData} />; // passing props
+function UserInfo() {
+  return <UserProfile />; // no props
 }
 
 export default UserInfo;
