@@ -1,8 +1,9 @@
 // ProfilePage.jsx
-import UserProfile from './UserProfile';
+import UserInfo from './UserInfo';
 
 function ProfilePage() {
-  return <UserProfile />; // no props
+  return <UserInfo />;
 }
 
 export default ProfilePage;
+
