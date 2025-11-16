@@ -1,6 +1,4 @@
-// Compatibility re-export for tests expecting the store under src/components
-export { useRecipeStore } from "../stores/recipeStore";
-
+// Compatibility store for tests expecting it at src/components/recipeStore.js
 import { create } from "zustand";
 import { nanoid } from "nanoid";
 
@@ -11,39 +9,46 @@ export const useRecipeStore = create((set, get) => ({
   favorites: [],
   recommendations: [],
 
-  // Add a new recipe
+  // Add recipe
   addRecipe: (recipe) =>
     set((state) => {
       const newRecipe = { ...recipe, id: nanoid() };
-      const updatedRecipes = [...state.recipes, newRecipe];
+      const updated = [...state.recipes, newRecipe];
       return {
-        recipes: updatedRecipes,
-        filteredRecipes: filterRecipes(updatedRecipes, state.searchTerm),
+        recipes: updated,
+        filteredRecipes: filterRecipes(updated, state.searchTerm),
       };
     }),
 
   // Update recipe
   updateRecipe: (id, updatedRecipe) =>
     set((state) => {
-      const updatedRecipes = state.recipes.map((recipe) =>
-        recipe.id === id ? { ...recipe, ...updatedRecipe } : recipe
+      const updated = state.recipes.map((r) =>
+        r.id === id ? { ...r, ...updatedRecipe } : r
       );
       return {
-        recipes: updatedRecipes,
-        filteredRecipes: filterRecipes(updatedRecipes, state.searchTerm),
+        recipes: updated,
+        filteredRecipes: filterRecipes(updated, state.searchTerm),
       };
     }),
 
   // Delete recipe
   deleteRecipe: (id) =>
     set((state) => {
-      const updatedRecipes = state.recipes.filter((recipe) => recipe.id !== id);
+      const updated = state.recipes.filter((r) => r.id !== id);
       return {
-        recipes: updatedRecipes,
-        filteredRecipes: filterRecipes(updatedRecipes, state.searchTerm),
+        recipes: updated,
+        filteredRecipes: filterRecipes(updated, state.searchTerm),
         favorites: state.favorites.filter((favId) => favId !== id),
       };
     }),
+
+  // Set recipes directly
+  setRecipes: (newRecipes) =>
+    set((state) => ({
+      recipes: newRecipes,
+      filteredRecipes: filterRecipes(newRecipes, state.searchTerm),
+    })),
 
   // Search
   setSearchTerm: (term) =>
@@ -61,7 +66,7 @@ export const useRecipeStore = create((set, get) => ({
       favorites: state.favorites.filter((favId) => favId !== id),
     })),
 
-  // Generate recommendations (mock)
+  // Generate recommendations
   generateRecommendations: () =>
     set((state) => {
       const recommended = state.recipes.filter(
@@ -71,8 +76,9 @@ export const useRecipeStore = create((set, get) => ({
     }),
 }));
 
-// Helper function for search
+// Helper function
 const filterRecipes = (recipes, term) =>
   recipes.filter((recipe) =>
     recipe.title.toLowerCase().includes(term.toLowerCase())
   );
+
