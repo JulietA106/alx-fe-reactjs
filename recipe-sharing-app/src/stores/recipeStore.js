@@ -41,6 +41,13 @@ export const useRecipeStore = create((set, get) => ({
       };
     }),
 
+  // Set recipes directly (for bulk operations or initialization)
+  setRecipes: (newRecipes) =>
+    set((state) => ({
+      recipes: newRecipes,
+      filteredRecipes: filterRecipes(newRecipes, state.searchTerm),
+    })),
+
   // Search
   setSearchTerm: (term) =>
     set((state) => ({
