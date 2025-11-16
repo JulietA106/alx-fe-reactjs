@@ -3,6 +3,7 @@ import { useRecipeStore } from "./stores/recipeStore";  // fixed path
 import RecipeDetails from "./components/RecipeDetails";
 import SearchBar from "./components/SearchBar";
 import AddRecipeForm from "./components/AddRecipeForm";
+import RecipeList from "./components/RecipeList";
 import FavoritesList from "./components/FavoritesList";
 import ErrorBoundary from "./components/ErrorBoundary";
 import RecommendationsList from "./components/RecommendationsList";
@@ -31,18 +32,7 @@ function App() {
                 <SearchBar />
 
                 <h2>All Recipes</h2>
-                {displayedRecipes.length === 0 ? (
-                  <p>No recipes found.</p>
-                ) : (
-                  displayedRecipes.map((recipe) => (
-                    <div key={recipe.id} style={{ marginBottom: "10px" }}>
-                      <h3>{recipe.title}</h3>
-                      <p>{recipe.description}</p>
-
-                      <Link to={`/recipes/${recipe.id}`}>View Details</Link>
-                    </div>
-                  ))
-                )}
+                <RecipeList />
 
                 <h2>My Favorites</h2>
                 <ErrorBoundary>
