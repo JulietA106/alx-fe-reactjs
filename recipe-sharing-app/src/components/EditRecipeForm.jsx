@@ -1,14 +1,15 @@
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import { useRecipeStore } from "./recipeStore";
+import { useRecipeStore } from "../stores/recipeStore";
 
-const EditRecipeForm = () => {
-  const { id } = useParams(); // Get recipe id from URL
+const EditRecipeForm = ({ recipe: propRecipe } = {}) => {
+  const { id: paramId } = useParams(); // Get recipe id from URL (if present)
   const navigate = useNavigate();
   const recipes = useRecipeStore((state) => state.recipes);
   const updateRecipe = useRecipeStore((state) => state.updateRecipe);
 
-  const recipe = recipes.find((r) => r.id === id);
+  const id = propRecipe?.id ?? paramId;
+  const recipe = propRecipe ?? recipes.find((r) => r.id === id);
 
   // Initialize form state with existing recipe data
   const [title, setTitle] = useState(recipe?.title || "");
