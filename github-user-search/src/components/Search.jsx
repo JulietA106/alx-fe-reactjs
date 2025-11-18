@@ -3,6 +3,8 @@ import { searchUsers } from "../services/githubService";
 
 const Search = () => {
   const [query, setQuery] = useState("");
+  const [location, setLocation] = useState("");
+  const [minRepos, setMinRepos] = useState("");
   const [users, setUsers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -14,7 +16,10 @@ const Search = () => {
     setUsers([]);
 
     try {
-      const data = await searchUsers(query);
+      const data = await searchUsers(query, {
+        location: location || undefined,
+        minRepos: minRepos ? parseInt(minRepos) : undefined,
+      });
       if (data.length === 0) {
         setError("Looks like we cant find the user");
       } else {
@@ -35,6 +40,20 @@ const Search = () => {
           placeholder="Enter GitHub username or keyword"
           value={query}
           onChange={(e) => setQuery(e.target.value)}
+          className="border p-2 mr-2"
+        />
+        <input
+          type="text"
+          placeholder="Location (optional)"
+          value={location}
+          onChange={(e) => setLocation(e.target.value)}
+          className="border p-2 mr-2"
+        />
+        <input
+          type="number"
+          placeholder="Min Repos (optional)"
+          value={minRepos}
+          onChange={(e) => setMinRepos(e.target.value)}
           className="border p-2 mr-2"
         />
         <button type="submit" className="bg-blue-500 text-white p-2 rounded">
