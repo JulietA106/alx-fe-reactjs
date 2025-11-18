@@ -1,6 +1,10 @@
 import { useState } from "react";
 import { searchUsers } from "../services/githubService";
 
+const fetchUserData = async (query, { location, minRepos } = {}) => {
+  return await searchUsers(query, { location, minRepos });
+};
+
 const Search = () => {
   const [query, setQuery] = useState("");
   const [location, setLocation] = useState("");
@@ -16,7 +20,7 @@ const Search = () => {
     setUsers([]);
 
     try {
-      const data = await searchUsers(query, {
+      const data = await fetchUserData(query, {
         location: location || undefined,
         minRepos: minRepos ? parseInt(minRepos) : undefined,
       });
