@@ -1,103 +1,97 @@
-import React, { useState } from "react";
-import { fetchUserData, fetchAdvancedUsers } from "../services/githubService";
+import { useState } from "react";
+import { searchAdvancedUsers } from "../services/githubService";
 
-function Search() {
+export default function Search() {
   const [username, setUsername] = useState("");
   const [location, setLocation] = useState("");
   const [minRepos, setMinRepos] = useState("");
-  const [users, setUsers] = useState([]);
+  const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(false);
 
-  const handleBasicSearch = async (e) => {
+  const handleSearch = async (e) => {
     e.preventDefault();
-    if (!username) return;
     setLoading(true);
     setError(false);
+    setResults([]);
 
     try {
-      const data = await fetchUserData(username);
-      setUsers([data]); // wrap single user in array
-    } catch {
+      const data = await searchAdvancedUsers(username, location, minRepos);
+      if (data.items.length === 0) {
+        setError(true);
+      } else {
+        setResults(data.items);
+      }
+    } catch (err) {
       setError(true);
-      setUsers([]);
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleAdvancedSearch = async (e) => {
-    e.preventDefault();
-    if (!username && !location && !minRepos) return;
-    setLoading(true);
-    setError(false);
-
-    try {
-      const data = await fetchAdvancedUsers({ username, location, minRepos });
-      setUsers(data.items || []);
-    } catch {
-      setError(true);
-      setUsers([]);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="p-6 max-w-xl mx-auto">
-      <form onSubmit={handleAdvancedSearch} className="flex flex-col gap-4 mb-4">
+    <div className="p-6 max-w-3xl mx-auto">
+      <form
+        onSubmit={handleSearch}
+        className="flex flex-col md:flex-row gap-2 mb-6"
+      >
         <input
           type="text"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          className="border p-2 rounded"
+          className="border p-2 rounded w-full md:w-1/3"
         />
         <input
           type="text"
           placeholder="Location"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
-          className="border p-2 rounded"
+          className="border p-2 rounded w-full md:w-1/3"
         />
         <input
           type="number"
-          placeholder="Minimum Repositories"
+          placeholder="Min repos"
           value={minRepos}
           onChange={(e) => setMinRepos(e.target.value)}
-          className="border p-2 rounded"
+          className="border p-2 rounded w-full md:w-1/3"
         />
         <button
           type="submit"
-          className="bg-blue-500 text-white p-2 rounded hover:bg-blue-600"
+          className="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition"
         >
           Search
         </button>
       </form>
 
-      {loading && <p>Loading...</p>}
-      {error && <p>Looks like we cant find the user</p>}
+      {loading && <p className="text-gray-500">Loading...</p>}
+      {error && <p className="text-red-500">Looks like we cant find the user</p>}
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {users.map((user) => (
-          <div key={user.login} className="border p-4 rounded shadow">
-            <img src={user.avatar_url} alt={user.login} className="w-24 h-24 rounded-full mx-auto" />
-            <h3 className="text-center font-bold mt-2">{user.name || user.login}</h3>
-            {user.location && <p className="text-center text-sm">{user.location}</p>}
-            <p className="text-center text-sm">Repos: {user.public_repos || "N/A"}</p>
-            <a
-              href={user.html_url}
-              target="_blank"
-              rel="noreferrer"
-              className="text-center block mt-2 text-blue-500 hover:underline"
-            >
-              View Profile
-            </a>
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {results.map((user) => (
+          <div
+            key={user.id}
+            className="border rounded p-4 flex items-center gap-4 shadow hover:shadow-md transition"
+          >
+            <img
+              src={user.avatar_url}
+              alt={user.login}
+              className="w-16 h-16 rounded-full"
+            />
+            <div>
+              <p className="font-semibold">{user.login}</p>
+              {user.location && <p className="text-sm">Location: {user.location}</p>}
+              <a
+                href={user.html_url}
+                target="_blank"
+                className="text-blue-500 hover:underline"
+              >
+                View Profile
+              </a>
+            </div>
           </div>
         ))}
       </div>
     </div>
   );
 }
-
-export default Search;
