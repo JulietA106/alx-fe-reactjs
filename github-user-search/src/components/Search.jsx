@@ -1,3 +1,4 @@
+// src/components/Search.jsx
 import React, { useState } from "react";
 import { fetchUserData } from "../services/githubService";
 
@@ -11,13 +12,13 @@ function Search() {
     e.preventDefault();
     setLoading(true);
     setError(false);
+    setUser(null);
 
     try {
       const data = await fetchUserData(username);
       setUser(data);
     } catch (err) {
       setError(true);
-      setUser(null);
     } finally {
       setLoading(false);
     }
@@ -36,7 +37,7 @@ function Search() {
       </form>
 
       {loading && <p>Loading...</p>}
-      {error && <p>Looks like we can't find the user.</p>}
+      {error && <p>Looks like we cant find the user</p>}
 
       {user && (
         <div>
@@ -52,3 +53,4 @@ function Search() {
 }
 
 export default Search;
+
