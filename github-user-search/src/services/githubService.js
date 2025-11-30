@@ -22,3 +22,7 @@ export const searchUsers = async (query, { location, minRepos } = {}) => {
   }
 };
 
+export const fetchUserData = async (query, { location, minRepos } = {}) => {
+  return await searchUsers(query, { location, minRepos });
+};
+

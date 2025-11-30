@@ -1,9 +1,5 @@
 import { useState } from "react";
-import { searchUsers } from "../services/githubService";
-
-const fetchUserData = async (query, { location, minRepos } = {}) => {
-  return await searchUsers(query, { location, minRepos });
-};
+import { fetchUserData } from "../services/githubService";
 
 const Search = () => {
   const [query, setQuery] = useState("");
