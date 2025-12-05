@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import data from "../data.json";
 
 const HomePage = () => {
   const [recipes, setRecipes] = useState([]);
 
   useEffect(() => {
-    setRecipes(data); // load mock data
+    fetch("/data.json")
+      .then((res) => res.json())
+      .then((data) => setRecipes(data));
   }, []);
 
   return (
@@ -14,6 +15,16 @@ const HomePage = () => {
       <h1 className="text-4xl font-bold mb-8 text-center text-blue-600">
         Recipe Collection
       </h1>
+
+      <div className="text-center mb-6">
+        <Link
+          to="/add-recipe"
+          className="bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 transition"
+        >
+          Add New Recipe
+        </Link>
+      </div>
+
       <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         {recipes.map((recipe) => (
           <Link key={recipe.id} to={`/recipe/${recipe.id}`}>
