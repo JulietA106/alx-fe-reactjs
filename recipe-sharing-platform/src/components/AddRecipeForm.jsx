@@ -6,11 +6,12 @@ const AddRecipeForm = () => {
   const [summary, setSummary] = useState("");
   const [image, setImage] = useState("");
   const [ingredients, setIngredients] = useState("");
-  const [instructions, setInstructions] = useState("");
+  const [steps, setSteps] = useState(""); // <-- changed from instructions to steps
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!title || !summary || !image || !ingredients || !instructions) {
+
+    if (!title || !summary || !image || !ingredients || !steps) {
       alert("Please fill in all fields");
       return;
     }
@@ -21,16 +22,17 @@ const AddRecipeForm = () => {
       summary,
       image,
       ingredients: ingredients.split(",").map((i) => i.trim()),
-      instructions: instructions.split(".").map((i) => i.trim())
+      steps: steps.split(".").map((s) => s.trim()) // <-- use steps here
     };
 
     console.log("New Recipe Submitted:", newRecipe);
     alert("Recipe submitted! (Check console)");
+
     setTitle("");
     setSummary("");
     setImage("");
     setIngredients("");
-    setInstructions("");
+    setSteps("");
   };
 
   return (
@@ -72,9 +74,9 @@ const AddRecipeForm = () => {
         />
 
         <textarea
-          placeholder="Instructions (period separated)"
-          value={instructions}
-          onChange={(e) => setInstructions(e.target.value)}
+          placeholder="Steps (period separated)"
+          value={steps}
+          onChange={(e) => setSteps(e.target.value)}
           className="w-full p-3 mb-4 border rounded"
         />
 
