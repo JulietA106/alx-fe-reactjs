@@ -1,0 +1,15 @@
+@import "tailwindcss";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Basic centering so the card is visible in the middle */
+html, body, #root {
+  height: 100%;
+}
+body {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4rem;
+}
