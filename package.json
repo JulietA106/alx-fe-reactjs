@@ -1,9 +1,5 @@
 {
-<<<<<<< HEAD
-  "name": "form-handling-react",
-=======
   "name": "form-handling",
->>>>>>> b264bfa238c10785bf9df07308106d03683f98e5
   "private": true,
   "version": "0.0.0",
   "type": "module",
