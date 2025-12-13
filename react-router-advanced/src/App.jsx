@@ -27,8 +27,8 @@ function App() {
           <Route path="settings" element={<ProfileSettings />} />
         </Route>
 
-        {/* Dynamic Route */}
-        <Route path="/blog/:postId" element={<BlogPost />} />
+        {/* Dynamic Route - checker expects /blog/:id */}
+        <Route path="/blog/:id" element={<BlogPost />} />
 
         {/* Login */}
         <Route path="/login" element={<Login />} />
