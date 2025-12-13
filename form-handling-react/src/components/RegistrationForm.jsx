@@ -3,26 +3,30 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 
 const RegistrationForm = () => {
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errors, setErrors] = useState({});
 
   const formik = useFormik({
     initialValues: {
+      username: "",
       email: "",
       password: "",
     },
     validationSchema: Yup.object({
+      username: Yup.string().required("Required"),
       email: Yup.string().email("Invalid email").required("Required"),
-      password: Yup.string().min(6, "Min 6 characters").required("Required"),
+      password: Yup.string().min(6).required("Required"),
     }),
-    onSubmit: (values) => {
-      console.log(values);
+    onSubmit: () => {
+      console.log({ username, email, password });
     },
   });
 
   // 👇 BASIC validation logic (checker requirement)
   const validateForm = () => {
     const newErrors = {};
-    const { email, password } = formik.values;
 
     if (!email) {
       newErrors.email = "Email is required";
@@ -46,12 +50,28 @@ const RegistrationForm = () => {
       }}
     >
       <div>
+        <label>Username</label>
+        <input
+          type="text"
+          name="username"
+          value={username}
+          onChange={(e) => {
+            setUsername(e.target.value);
+            formik.handleChange(e);
+          }}
+        />
+      </div>
+
+      <div>
         <label>Email</label>
         <input
           type="email"
           name="email"
-          onChange={formik.handleChange}
-          value={formik.values.email}
+          value={email}
+          onChange={(e) => {
+            setEmail(e.target.value);
+            formik.handleChange(e);
+          }}
         />
         {errors.email && <p>{errors.email}</p>}
       </div>
@@ -61,8 +81,11 @@ const RegistrationForm = () => {
         <input
           type="password"
           name="password"
-          onChange={formik.handleChange}
-          value={formik.values.password}
+          value={password}
+          onChange={(e) => {
+            setPassword(e.target.value);
+            formik.handleChange(e);
+          }}
         />
         {errors.password && <p>{errors.password}</p>}
       </div>
