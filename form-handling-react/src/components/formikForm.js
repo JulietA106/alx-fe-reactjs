@@ -16,7 +16,7 @@ const FormikForm = () => {
   });
 
   const onSubmit = (values) => {
-    console.log(values);
+    console.log("Form submitted:", values);
   };
 
   return (
