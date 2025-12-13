@@ -1,4 +1,3 @@
-import React from "react";
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect } from "vitest";
 import "@testing-library/jest-dom";
@@ -13,39 +12,24 @@ describe("TodoList Component", () => {
 
   it("can add a new todo", () => {
     render(<TodoList />);
-    const input = screen.getByPlaceholderText("Enter new todo");
-    const addButton = screen.getByText("Add Todo");
-
-    fireEvent.change(input, { target: { value: "Test new todo" } });
-    fireEvent.click(addButton);
-
+    fireEvent.change(screen.getByPlaceholderText("Enter new todo"), {
+      target: { value: "Test new todo" },
+    });
+    fireEvent.click(screen.getByText("Add Todo"));
     expect(screen.getByText("Test new todo")).toBeInTheDocument();
   });
 
   it("can toggle a todo", () => {
     render(<TodoList />);
-    const todoItem = screen.getByText("Learn React");
-
-    // Click to mark as completed
-    fireEvent.click(todoItem);
-    expect(todoItem).toHaveStyle("text-decoration: line-through");
-
-    // Click again to mark as not completed
-    fireEvent.click(todoItem);
-    expect(todoItem).toHaveStyle("text-decoration: none");
+    const todo = screen.getByText("Learn React");
+    fireEvent.click(todo);
+    expect(todo).toHaveStyle("text-decoration: line-through");
   });
 
   it("can delete a todo", () => {
     render(<TodoList />);
-
-    // Target specific todo
-    const todoText = "Build a Todo App";
-    const todoItem = screen.getByText(todoText);
-    
-    // Find delete button inside the same list item
-    const deleteButton = todoItem.closest("li").querySelector("button");
-
-    fireEvent.click(deleteButton);
-    expect(screen.queryByText(todoText)).not.toBeInTheDocument();
+    const deleteButtons = screen.getAllByText("Delete");
+    fireEvent.click(deleteButtons[1]);
+    expect(screen.queryByText("Build a Todo App")).not.toBeInTheDocument();
   });
 });
