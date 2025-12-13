@@ -26,19 +26,26 @@ describe("TodoList Component", () => {
     render(<TodoList />);
     const todoItem = screen.getByText("Learn React");
 
+    // Click to mark as completed
     fireEvent.click(todoItem);
     expect(todoItem).toHaveStyle("text-decoration: line-through");
 
+    // Click again to mark as not completed
     fireEvent.click(todoItem);
     expect(todoItem).toHaveStyle("text-decoration: none");
   });
 
   it("can delete a todo", () => {
     render(<TodoList />);
-    const todoItem = screen.getByText("Build a Todo App");
-    const deleteButton = todoItem.querySelector("button");
+
+    // Target specific todo
+    const todoText = "Build a Todo App";
+    const todoItem = screen.getByText(todoText);
+    
+    // Find delete button inside the same list item
+    const deleteButton = todoItem.closest("li").querySelector("button");
 
     fireEvent.click(deleteButton);
-    expect(todoItem).not.toBeInTheDocument();
+    expect(screen.queryByText(todoText)).not.toBeInTheDocument();
   });
 });
