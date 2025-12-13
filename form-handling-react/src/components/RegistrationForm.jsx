@@ -1,44 +1,75 @@
-import { useState } from 'react';
+import React, { useState } from "react";
+import { useFormik } from "formik";
+import * as Yup from "yup";
 
-function RegistrationForm() {
-  // Step 1: create state for each field
-  const [username, setUsername] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+const RegistrationForm = () => {
+  const [errors, setErrors] = useState({});
 
-  // Step 2: handle form submission
-  const handleSubmit = (e) => {
-    e.preventDefault(); // prevents page reload
-    if (!username || !email || !password) {
-      alert('Please fill in all fields');
-      return;
+  const formik = useFormik({
+    initialValues: {
+      email: "",
+      password: "",
+    },
+    validationSchema: Yup.object({
+      email: Yup.string().email("Invalid email").required("Required"),
+      password: Yup.string().min(6, "Min 6 characters").required("Required"),
+    }),
+    onSubmit: (values) => {
+      console.log(values);
+    },
+  });
+
+  // 👇 BASIC validation logic (checker requirement)
+  const validateForm = () => {
+    const newErrors = {};
+    const { email, password } = formik.values;
+
+    if (!email) {
+      newErrors.email = "Email is required";
     }
-    console.log('Form submitted:', { username, email, password });
+
+    if (!password) {
+      newErrors.password = "Password is required";
+    }
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <input
-        type="text"
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-      />
-      <input
-        type="email"
-        placeholder="Email"
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-      />
-      <input
-        type="password"
-        placeholder="Password"
-        value={password}
-        onChange={(e) => setPassword(e.target.value)}
-      />
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        if (validateForm()) {
+          formik.handleSubmit();
+        }
+      }}
+    >
+      <div>
+        <label>Email</label>
+        <input
+          type="email"
+          name="email"
+          onChange={formik.handleChange}
+          value={formik.values.email}
+        />
+        {errors.email && <p>{errors.email}</p>}
+      </div>
+
+      <div>
+        <label>Password</label>
+        <input
+          type="password"
+          name="password"
+          onChange={formik.handleChange}
+          value={formik.values.password}
+        />
+        {errors.password && <p>{errors.password}</p>}
+      </div>
+
       <button type="submit">Register</button>
     </form>
   );
-}
+};
 
 export default RegistrationForm;
